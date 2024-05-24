@@ -1,0 +1,48 @@
+.expense-chart {
+  width: 45%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.expense-chart h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.chart-expense {
+  justify-content: space-between;
+}
+
+.expense-chart-item {
+  border-radius: 4px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.expense-icon-kategori {
+  display: flex;
+}
+
+.expense-chart-item-kategori {
+  text-align: left;
+  padding: 10px;
+}
+
+.expense-chart-item-icon {
+  padding: 10px;
+}
+
+.expense-chart-item-persen {
+  padding-top: 20px;
+}
+
+.expense-color-blue {
+  color: rgb(26, 131, 199);
+}
+
+.expense-color-green {
+  color: rgb(35, 105, 95);
+}

@@ -1,0 +1,231 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+p {
+  line-height: 1.5;
+}
+
+.nav {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.2s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(35, 105, 95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.logo-nav img {
+  width: 110px;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.menu ul {
+  padding-left: 85px;
+}
+
+.menu li {
+  padding-left: 100px;
+}
+.menu a {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn button {
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(19, 135, 117);
+  color: white;
+  font-weight: bolder;
+}
+/* Home Section */
+#home {
+  padding: 160px;
+  background-color: rgb(35, 105, 95);
+  font-size: 40px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.text-color {
+  color: rgb(131, 176, 21);
+}
+
+.text button {
+  width: 140px;
+  height: 60px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(19, 135, 117);
+  color: white;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+/* Fitur Section */
+#fitur {
+  padding: 40px;
+}
+
+.title h1 {
+  text-align: center;
+  /* padding-bottom: 10px; */
+  font-size: 30px;
+}
+
+.monage {
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.monage p {
+  font-size: 25px;
+}
+
+.deskripsi p {
+  text-align: center;
+}
+
+.text-monage {
+  padding: 20px;
+}
+
+.card-fitur ul {
+  display: flex;
+  padding: 30px;
+  gap: 3rem;
+  list-style: none;
+}
+
+.card-fitur h4 {
+  font-size: 25px;
+  margin-bottom: 20px;
+  color: rgb(35, 105, 95);
+}
+
+/* Tips Hemat */
+#tips-hemat {
+  padding: 40px;
+  background-color: rgb(35, 105, 95);
+}
+
+.card-tips-hemat ul {
+  display: flex;
+  padding: 40px;
+  gap: 7rem;
+  list-style: none;
+}
+
+.card-tips-hemat li {
+  background-color: white;
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 150px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1);
+}
+.card-tips-hemat h4 {
+  padding: 10px;
+  color: rgb(35, 105, 95);
+  font-size: 20px;
+}
+
+.card-tips-hemat p {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+/* FAQ */
+#faq {
+  padding: 40px;
+}
+
+.card-faq ul {
+  list-style: none;
+}
+
+.card-faq li {
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+  padding: 35px;
+  margin: 50px;
+  border-radius: 20px;
+}
+
+.card-faq h2 {
+  font-size: 25px;
+}
+
+/* Footer */
+#footer {
+  background-color: rgb(35, 105, 95);
+  padding: 20px;
+  color: white;
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+  justify-content: space-between;
+}
+
+.main {
+  display: flex;
+  gap: 4rem;
+}
+
+.main ul {
+  list-style: none;
+}
+
+.main p {
+  color: rgb(207, 203, 203);
+}
+
+.logo-sosial ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
+.logo-sosial img {
+  width: 30px;
+  height: 30px;
+}
+
+.logo {
+  display: flex;
+  gap: 3rem;
+  padding-top: 50px;
+}
+
+.logo-monage {
+  padding-top: 3px;
+}
+.logo-monage img {
+  width: 110px;
+}

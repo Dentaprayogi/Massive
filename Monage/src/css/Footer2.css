@@ -1,0 +1,41 @@
+.footer2 {
+  background-color: rgb(35, 105, 95);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer2 p {
+  font-size: 15px;
+}
+
+.footer2-sosial {
+  display: flex;
+}
+
+.footer2-logo-sosial {
+  padding-right: 60px;
+}
+
+.footer2-logo-sosial ul {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.footer2-logo-sosial img {
+  height: 30px;
+  width: 30px;
+}
+
+.footer2-logo img {
+  width: 110px;
+}
+
+.footer2-social-links a:hover {
+  text-decoration: underline;
+}

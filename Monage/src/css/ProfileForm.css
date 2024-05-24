@@ -1,0 +1,68 @@
+.profile-form {
+  background-color: #f9f9f9;
+  padding: 50px;
+  margin: 0 50px 50px 50px;
+  border-radius: 10px;
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-form h3 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.profile-form h4 {
+  margin-bottom: 10px;
+}
+
+.form-section {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.nama-depan-belakang {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 45%;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.data-diri input,
+.data-diri select {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.kontak input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.save-button {
+  width: 10%;
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  align-self: center;
+}

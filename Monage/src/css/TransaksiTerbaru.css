@@ -1,0 +1,111 @@
+#transaksi-terbaru {
+  padding: 40px;
+}
+
+.transaksi-terbaru {
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
+  display: flex;
+  gap: 20px;
+}
+
+.transaksi-terbaru-2 {
+  border-radius: 18px 0px 0px 18px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background-color: #206a5d;
+  width: 74px;
+  height: 450px;
+}
+.transaksi-terbaru-3 {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  margin: auto 0;
+  padding: 0 20px;
+}
+
+.transaksi-terbaru-4 {
+  color: #206a5d;
+  font: 600 24px Poppins, sans-serif;
+}
+
+.transaksi-terbaru-5 {
+  margin-top: 11px;
+  padding-left: 51px;
+}
+
+.transaksi-terbaru-6 {
+  border-color: rgba(79, 79, 79, 1);
+  border-bottom: 2px solid;
+  background-color: #ffff;
+  padding: 20px 40px 20px 14px;
+}
+
+.transaksi-terbaru-column {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column00 {
+  padding-top: 13px;
+  display: flex;
+  gap: 400px;
+  font-size: 20px;
+  justify-content: space-between;
+}
+
+.transaksi-terbaru-8 {
+  display: flex;
+  /* flex-grow: 1; */
+  gap: 20px;
+  font-size: 20px;
+  color: #1d1d1d;
+  font-weight: 500;
+}
+
+.img {
+  aspect-ratio: 1;
+  object-fit: auto;
+  object-position: center;
+  width: 85px;
+}
+.transaksi-terbaru-9 {
+  font-family: Poppins, sans-serif;
+  margin: auto 0;
+}
+.transaksi-terbaru-column-2 {
+  display: flex;
+  flex-direction: column;
+  line-height: normal;
+  width: 57%;
+  margin-left: 20px;
+}
+
+.transaksi-terbaru-10 {
+  display: flex;
+  gap: 250px;
+  align-self: stretch;
+  font-size: 20px;
+  margin: auto 0;
+}
+
+.color-text-pemasukan {
+  color: var(--Pemasukan, #2483c7);
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+}
+
+.color-text-pengeluaran {
+  color: #ff4437;
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+}
+.transaksi-terbaru-12 {
+  color: var(--black-1, #1d1d1d);
+  font-family: Poppins, sans-serif;
+  font-weight: 500;
+  flex-grow: 1;
+  flex-basis: auto;
+}

@@ -1,0 +1,136 @@
+#anggaran-kamu {
+  padding: 40px;
+}
+
+.anggaran-kamu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 2px;
+}
+.anggaran-kamu-2 {
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.25);
+  display: flex;
+  width: 100%;
+  padding-right: 44px;
+  gap: 20px;
+  justify-content: space-between;
+}
+.anggaran-kamu-3 {
+  display: flex;
+  gap: 20px;
+  font-size: 20px;
+  color: var(--black-1, #1d1d1d);
+  font-weight: 600;
+}
+.anggaran-kamu-4 {
+  border-radius: 18px 0px 0px 18px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background-color: var(--primary, #206a5d);
+  width: 74px;
+  height: 275px;
+}
+.anggaran-kamu-5 {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: fit-content;
+  margin: auto 0;
+}
+.anggaran-kamu-6 {
+  color: var(--primary, #206a5d);
+  align-self: start;
+  margin-left: 13px;
+  font: 600 24px Poppins, sans-serif;
+}
+
+.anggaran-kamu-7 {
+  padding-left: 15px;
+  display: flex;
+  margin-top: 31px;
+  gap: 7px;
+}
+.img {
+  aspect-ratio: 1.16;
+  object-fit: auto;
+  object-position: center;
+  width: 57px;
+}
+.anggaran-kamu-8 {
+  font-family: Poppins, sans-serif;
+  flex-grow: 1;
+  flex-basis: auto;
+  margin: auto 0;
+}
+
+.img-2 {
+  aspect-ratio: 0.92;
+  object-fit: auto;
+  object-position: center;
+  width: 53px;
+}
+.anggaran-kamu-10 {
+  font-family: Poppins, sans-serif;
+  flex-grow: 1;
+  flex-basis: auto;
+  margin: auto 0;
+}
+.anggaran-kamu-11 {
+  display: flex;
+  flex-direction: column;
+  margin: auto 0;
+}
+.anggaran-kamu-12 {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  padding: 0 19px 0 69px;
+}
+
+.anggaran-kamu-13 {
+  color: var(--primary, #206a5d);
+  align-self: end;
+  font: 600 24px Poppins, sans-serif;
+}
+
+.anggaran-kamu-15 {
+  border-radius: 30px;
+  background-color: var(--Hover-Navbar, #83b015);
+  display: flex;
+  margin-top: 5px;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.anggaran-kamu-16 {
+  border-radius: 15px;
+  background-color: var(--primary, #206a5d);
+  width: 81px;
+  height: 23px;
+}
+.anggaran-kamu-17 {
+  color: var(--black-1, #1d1d1d);
+  align-self: center;
+  margin-top: 32px;
+  font: 600 16px Poppins, sans-serif;
+}
+.anggaran-kamu-18 {
+  border-radius: 30px;
+  background-color: var(--Hover-Navbar, #83b015);
+  display: flex;
+  margin-top: 5px;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.anggaran-kamu-19 {
+  border-radius: 15px;
+  background-color: var(--primary, #206a5d);
+  width: 121px;
+  height: 23px;
+}

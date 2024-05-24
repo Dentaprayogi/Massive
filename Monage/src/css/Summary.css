@@ -1,0 +1,49 @@
+.summary {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  margin: 20px 0;
+}
+.summary-item {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: left;
+}
+
+.summary-item p,
+h2 {
+  padding-top: 5px;
+}
+
+.summary-item-total-saldo {
+  background-color: rgb(244, 154, 64);
+  text-align: left;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item-tabungan {
+  background-color: rgb(39, 193, 83);
+  text-align: left;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.summary-item-pemasukan {
+  background-color: rgb(36, 131, 199);
+  text-align: left;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.summary-item-pengeluaran {
+  background-color: rgb(255, 68, 55);
+  text-align: left;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
