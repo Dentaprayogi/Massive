@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../assets/pengingat.png";
+import TambahPengingatOverlay from "./TambahPengingatOverlay";
 import "../css/Pengingat.css";
 
 function Pengingat() {
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
+  const handleOpenOverlay = () => {
+    setIsOverlayVisible(true);
+  };
+
+  const handleCloseOverlay = () => {
+    setIsOverlayVisible(false);
+  };
+
   return (
     <div id="pengingat">
       <div className="pengingat">
@@ -15,7 +26,7 @@ function Pengingat() {
                 <div className="pengingat-7">Pengingat Pembayaran</div>
               </div>
               <div className="pengingat-8">
-                <button>Tambah Pengingat</button>
+                <button onClick={handleOpenOverlay}>Tambah Pengingat</button>
               </div>
             </div>
             <div className="pengingat-9">
@@ -45,6 +56,10 @@ function Pengingat() {
           </div>
         </div>
       </div>
+      <TambahPengingatOverlay
+        isVisible={isOverlayVisible}
+        onClose={handleCloseOverlay}
+      />
     </div>
   );
 }
