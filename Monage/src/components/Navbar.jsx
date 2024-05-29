@@ -28,7 +28,14 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="">Transaksi</Link>
+          {/* <Link to="">Transaksi</Link> */}
+          <Link
+            to="/transaction"
+            className={activeLink === "/transaction" ? "active" : ""}
+            onClick={() => handleLinkClick("/transaction")}
+          >
+            Transaksi
+          </Link>
         </li>
         <li>
           <Link
