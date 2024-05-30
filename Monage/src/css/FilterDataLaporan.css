@@ -1,0 +1,27 @@
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.filter-options {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-options label {
+  display: flex;
+  flex-direction: column;
+}
+.filter-options select {
+  width: 200px;
+  height: 30px;
+}
+
+.filter-options button {
+  padding: 5px 10px;
+  margin-top: 20px;
+  background-color: rgb(35, 105, 95);
+  border: none;
+  color: white;
+  border-radius: 5px;
+}

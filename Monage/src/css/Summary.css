@@ -4,8 +4,32 @@
   padding: 20px;
   margin: 20px 0;
 }
-.summary-item {
-  background: white;
+.summary-item-icon-total-saldo {
+  background-color: rgb(244, 154, 64);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: left;
+}
+.summary-item-icon-tabungan {
+  background-color: rgb(39, 193, 83);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: left;
+}
+.summary-item-icon-pemasukan {
+  background-color: rgb(36, 131, 199);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: left;
+}
+.summary-item-icon-pengeluaran {
+  background-color: rgb(255, 68, 55);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -13,37 +37,30 @@
   text-align: left;
 }
 
-.summary-item p,
+.summary-items p,
 h2 {
   padding-top: 5px;
 }
 
-.summary-item-total-saldo {
-  background-color: rgb(244, 154, 64);
+.summary-items {
   text-align: left;
   padding: 20px;
   border-radius: 0 0 8px 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.summary-item-tabungan {
-  background-color: rgb(39, 193, 83);
-  text-align: left;
-  padding: 20px;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.total-saldo {
+  color: rgb(244, 154, 64);
 }
-.summary-item-pemasukan {
-  background-color: rgb(36, 131, 199);
-  text-align: left;
-  padding: 20px;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+.tabungan {
+  color: rgb(39, 193, 83);
 }
-.summary-item-pengeluaran {
-  background-color: rgb(255, 68, 55);
-  text-align: left;
-  padding: 20px;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+.pemasukan {
+  color: rgb(36, 131, 199);
+}
+
+.pengeluaran {
+  color: rgb(255, 68, 55);
 }

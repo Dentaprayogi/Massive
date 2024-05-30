@@ -1,0 +1,20 @@
+#laporan {
+  padding: 140px;
+}
+
+.filter-data-laporan {
+  background-color: rgb(35, 105, 95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 35px;
+  border-radius: 10px 10px 0 0;
+}
+.filter-table {
+  padding: 20px;
+  padding-bottom: 30px;
+  background-color: #e6f5e3;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+}

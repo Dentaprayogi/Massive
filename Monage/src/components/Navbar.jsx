@@ -28,7 +28,6 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          {/* <Link to="">Transaksi</Link> */}
           <Link
             to="/transaction"
             className={activeLink === "/transaction" ? "active" : ""}
@@ -47,7 +46,13 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="">Laporan</Link>
+          <Link
+            to="/laporan"
+            className={activeLink === "/laporan" ? "active" : ""}
+            onClick={() => handleLinkClick("/laporan")}
+          >
+            Laporan
+          </Link>
         </li>
       </ul>
       <div className="nav-profile">

@@ -13,6 +13,7 @@ import DeleteTransactionPopup from "./pages/DeleteTransactionPopup";
 import AnggaranKosong from "./pages/AnggranKosong";
 import ProfileEdit from "./pages/ProfileEdit";
 import PasswordEdit from "./pages/PasswordEdit";
+import Laporan from "./pages/Laporan";
 
 const App = () => {
   return (
@@ -34,6 +35,9 @@ const App = () => {
 
         {/* Anggaran */}
         <Route path="/anggarankosong" element={<AnggaranKosong />} />
+
+        {/* Laporan */}
+        <Route path="/laporan" element={<Laporan />} />
 
         {/* Profile */}
         <Route path="/ubahprofil" element={<ProfileEdit />} />

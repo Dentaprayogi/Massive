@@ -1,20 +1,23 @@
-import React from 'react';
+import React from "react";
 import "../css/Transaction.css";
 import logo from "../assets/Cover.png";
 import Pengeluaran from "../assets/pengeluaran.png";
 import Pemasukan from "../assets/pemasukan.png";
 import Tabungan from "../assets/tabungan.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown, faSackDollar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowUp,
+  faArrowDown,
+  faSackDollar,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-
 
 function Transaction() {
   const navigate = useNavigate();
-  
-    const handleTambahTransaksi = () => {
-      navigate("/addtransaction");
-    };
+
+  const handleTambahTransaksi = () => {
+    navigate("/addtransaction");
+  };
 
   return (
     <div className="app-container">
@@ -29,37 +32,45 @@ function Transaction() {
       <div className="summary-section">
         <div className="summary-item">
           <img src={Pemasukan} alt="total saldo" />
-          <div className="summary-amount"><span>Pemasukan</span></div>
+          <div className="summary-amount">
+            <span>Pemasukan</span>
+          </div>
           <div className="summary-amount text-blue">Rp 3.500.000</div>
         </div>
         <div className="summary-item">
           <img src={Pengeluaran} alt="total saldo" />
-          <div className="summary-amount"><span>Pengeluaran</span></div>
+          <div className="summary-amount">
+            <span>Pengeluaran</span>
+          </div>
           <div className="summary-amount text-red">Rp 1.000.000</div>
         </div>
         <div className="summary-item">
           <img src={Tabungan} alt="total saldo" />
-          <div className="summary-amount"><span>Tabungan</span></div>
+          <div className="summary-amount">
+            <span>Tabungan</span>
+          </div>
           <div className="summary-amount text-green">Rp 500.000</div>
         </div>
       </div>
       <div className="transaction-section">
         <div className="transaction-header">
-          <button className="btn btn-primary" onClick={handleTambahTransaksi}>+ Tambah Transaksi</button>
+          <button className="btn btn-primary" onClick={handleTambahTransaksi}>
+            + Tambah Transaksi
+          </button>
           <div className="search-filter">
             <input type="text" placeholder="Cari Transaksi" />
           </div>
         </div>
-        <h2 className='transaction-h2'>Riwayat Transaksi</h2>
+        <h2 className="transaction-h2">Riwayat Transaksi</h2>
         <ul className="transaction-list-1">
           <TransactionItem
             type="income"
             title="Gaji bulan April"
             amount="Rp 3.500.000"
             date="25-04-2024"
-            icon={faArrowUp} 
+            icon={faArrowUp}
           />
-          </ul>
+        </ul>
         <ul className="transaction-list-2">
           <TransactionItem
             type="expense"
@@ -68,11 +79,11 @@ function Transaction() {
             date="25-04-2024"
             icon={faArrowDown}
           />
-          </ul>
+        </ul>
         <ul className="transaction-list-3">
           <TransactionItem
             type="savings"
-            title="Tabungan"      
+            title="Tabungan"
             amount="Rp 3.500.000"
             date="25-03-2024"
             icon={faSackDollar}
@@ -84,15 +95,15 @@ function Transaction() {
 }
 
 function TransactionItem({ type, title, amount, date, icon, onEdit, data }) {
-    const navigate = useNavigate();
-  
-    const handleEditTransaksi = () => {
-      navigate("/edittransaction");
-    };
+  const navigate = useNavigate();
 
-    const handleHapus = () => {
-      navigate("/delete");
-    };
+  const handleEditTransaksi = () => {
+    navigate("/edittransaction");
+  };
+
+  const handleHapus = () => {
+    navigate("/delete");
+  };
 
   return (
     <li className={`transaction-item ${type}`}>
@@ -103,10 +114,10 @@ function TransactionItem({ type, title, amount, date, icon, onEdit, data }) {
         <span className="transaction-title">{title}</span>
       </div>
       <div className="transaction-details">
-      <span className="transaction-amount">{amount}</span>
+        <span className="transaction-amount">{amount}</span>
       </div>
       <div className="transaction-details">
-      <span className="transaction-date">{date}</span>
+        <span className="transaction-date">{date}</span>
       </div>
       <div className="transaction-actions">
         <button className="btn btn-edit" onClick={handleEditTransaksi}>
