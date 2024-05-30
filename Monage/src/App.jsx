@@ -14,6 +14,8 @@ import AnggaranKosong from "./pages/AnggranKosong";
 import ProfileEdit from "./pages/ProfileEdit";
 import PasswordEdit from "./pages/PasswordEdit";
 import Laporan from "./pages/Laporan";
+import TambahAnggaran from "./components/TambahAnggaran";
+import AnggaranSaya from "./pages/AnggaranSaya";
 
 const App = () => {
   return (
@@ -35,6 +37,8 @@ const App = () => {
 
         {/* Anggaran */}
         <Route path="/anggarankosong" element={<AnggaranKosong />} />
+        <Route path="/tambahanggaran" element={<TambahAnggaran />} />
+        <Route path="/laporananggaran" element={<AnggaranSaya />} />
 
         {/* Laporan */}
         <Route path="/laporan" element={<Laporan />} />

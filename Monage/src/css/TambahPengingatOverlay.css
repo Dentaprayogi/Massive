@@ -42,7 +42,7 @@
 .tambah-pengingat-form-group label {
   display: block;
   margin-bottom: 5px;
-  color: rgb(35, 105, 95);
+  /* color: rgb(35, 105, 95); */
 }
 
 .tambah-pengingat-form-group input {
@@ -51,7 +51,7 @@
   /* box-sizing: border-box; */
   border: 1px solid #ccc;
   border-radius: 5px;
-  border-color: rgb(35, 105, 95);
+  /* border-color: rgb(35, 105, 95); */
 }
 
 .tambah-pengingat-submit-button {

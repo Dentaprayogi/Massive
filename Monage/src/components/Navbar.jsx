@@ -41,6 +41,8 @@ function Navbar() {
             to="/anggarankosong"
             className={activeLink === "/anggarankosong" ? "active" : ""}
             onClick={() => handleLinkClick("/anggarankosong")}
+            // className={activeLink === "/laporananggaran" ? "active" : ""}
+            // onClick={() => handleLinkClick("/laporananggaran")}
           >
             Anggaran
           </Link>

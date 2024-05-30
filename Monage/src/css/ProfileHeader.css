@@ -21,6 +21,10 @@
   margin-left: 20px;
 }
 
+.profile-info h2 {
+  text-align: left;
+}
+
 .log-out-button {
   background-color: #004d40;
   color: white;
