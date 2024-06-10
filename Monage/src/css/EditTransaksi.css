@@ -12,7 +12,7 @@
 .navbar {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 0px;
   background-color: rgb(35, 105, 95);
   color: white;
   border-radius: 10px 10px 0 0;
@@ -20,7 +20,7 @@
 
 .navbar h2 {
   text-align: center;
-  padding-left: 410px;
+  padding: 0%;
 }
 
 .back-button {

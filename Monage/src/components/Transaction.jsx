@@ -1,14 +1,12 @@
 import React from "react";
 import "../css/Transaction.css";
 import logo from "../assets/Cover.png";
-import Pengeluaran from "../assets/pengeluaran.png";
-import Pemasukan from "../assets/pemasukan.png";
-import Tabungan from "../assets/tabungan.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUp,
   faArrowDown,
   faSackDollar,
+  faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
@@ -31,24 +29,18 @@ function Transaction() {
       </div>
       <div className="summary-section">
         <div className="summary-item">
-          <img src={Pemasukan} alt="total saldo" />
-          <div className="summary-amount">
-            <span>Pemasukan</span>
-          </div>
+          <FontAwesomeIcon icon={faArrowDown} className="icon income" />
+          <span>Pemasukan</span>
           <div className="summary-amount text-blue">Rp 3.500.000</div>
         </div>
         <div className="summary-item">
-          <img src={Pengeluaran} alt="total saldo" />
-          <div className="summary-amount">
-            <span>Pengeluaran</span>
-          </div>
+          <FontAwesomeIcon icon={faArrowUp} className="icon expense" />
+          <span>Pengeluaran</span>
           <div className="summary-amount text-red">Rp 1.000.000</div>
         </div>
         <div className="summary-item">
-          <img src={Tabungan} alt="total saldo" />
-          <div className="summary-amount">
-            <span>Tabungan</span>
-          </div>
+          <FontAwesomeIcon icon={faSackDollar} className="icon savings" />
+          <span>Tabungan</span>
           <div className="summary-amount text-green">Rp 500.000</div>
         </div>
       </div>
@@ -68,7 +60,7 @@ function Transaction() {
             title="Gaji bulan April"
             amount="Rp 3.500.000"
             date="25-04-2024"
-            icon={faArrowUp}
+            icon={faArrowDown}
           />
         </ul>
         <ul className="transaction-list-2">
@@ -77,7 +69,7 @@ function Transaction() {
             title="Uang makan siang"
             amount="Rp 200.000"
             date="25-04-2024"
-            icon={faArrowDown}
+            icon={faArrowUp}
           />
         </ul>
         <ul className="transaction-list-3">
@@ -86,7 +78,7 @@ function Transaction() {
             title="Tabungan"
             amount="Rp 3.500.000"
             date="25-03-2024"
-            icon={faSackDollar}
+            icon={faWallet}
           />
         </ul>
       </div>

@@ -9,6 +9,10 @@ const TambahAnggaran = ({ onClose }) => {
   const [month, setMonth] = useState("");
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate("/laporananggaran");
+  };
+
   const handleSave = () => {
     // Logika penyimpanan anggaran
     console.log({
@@ -24,7 +28,7 @@ const TambahAnggaran = ({ onClose }) => {
     <div id="tambah-anggaran">
       <div className="tambah-anggaran-form-container">
         <h2>Tambah Anggaran</h2>
-        <button className="tambah-anggaran-close-button" onClick={onClose}>
+        <button className="tambah-anggaran-close-button" onClick={handleBack}>
           ✕
         </button>
         <div className="tambah-anggaran-form-group">

@@ -11,7 +11,7 @@
 .navbar {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 0px;
   background-color: rgb(35, 105, 95);
   color: white;
   border-radius: 10px 10px 0 0;
@@ -102,7 +102,7 @@ input[type="date"] {
   display: flex;
   justify-content: center;
   height: 45px;
-  padding: 50px 0px;
+  padding: 50px 0px; 
   padding-bottom: 50px;
   padding-top: 50px;
 }

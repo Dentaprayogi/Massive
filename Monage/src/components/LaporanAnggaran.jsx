@@ -1,8 +1,15 @@
 import React from 'react';
 import { FaUtensils, FaShoppingCart, FaPlusCircle } from 'react-icons/fa';
 import '../css/LaporanAnggaran.css';
+import { useNavigate } from "react-router-dom";
 
 function LaporanAnggaran() {
+  const navigate = useNavigate();
+
+  const handleTambahAnggaran = () => {
+    navigate("/tambahanggaran");
+  };
+
   return (
     <div className="container">
       <main>
@@ -37,9 +44,9 @@ function LaporanAnggaran() {
             percentage={20}
           />
         </section>
-        <div className="add-button">
-          <FaPlusCircle size={32} />
-        </div>
+        <button className="add-button">
+          <FaPlusCircle size={32} onClick={handleTambahAnggaran} />
+        </button>
       </main>
     </div>
   );

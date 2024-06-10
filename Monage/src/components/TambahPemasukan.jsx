@@ -9,8 +9,8 @@ function TambahPemasukan() {
     navigate("/transaction");
   };
 
-  const handlePemasukan = () => {
-    navigate("/addincome");
+  const handlePengeluaran = () => {
+    navigate("/addtransaction");
   };
 
   const handleTabungan = () => {
@@ -55,8 +55,8 @@ return (
       <h2>Tambah Transaksi</h2>
     </div>
     <div className="tabs">
-      <button className="tab active">Pengeluaran</button>
-      <button className="tab" onClick={handlePemasukan}>Pemasukan</button>
+      <button className="tab" onClick={handlePengeluaran}>Pengeluaran</button>
+      <button className="tab active">Pemasukan</button>
       <button className="tab" onClick={handleTabungan}>Tabungan</button>
     </div>
     <div className="form">
