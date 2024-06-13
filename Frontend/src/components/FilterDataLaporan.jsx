@@ -18,7 +18,7 @@ function FilterDataLaporan() {
             <option value="Juli">Juli</option>
             <option value="Agustus">Aguatus</option>
             <option value="September">September</option>
-            <otion value="Oktober">Oktober</otion>
+            <option value="Oktober">Oktober</option>
             <option value="November">November</option>
             <option value="Desember">Desember</option>
           </select>
