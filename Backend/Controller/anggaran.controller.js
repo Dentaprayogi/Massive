@@ -72,9 +72,9 @@ export const tampilkanAnggaran = async (req, res) => {
     // Validasi input
     const offset = (page - 1) * limit;
 
-    // Ambil daftar anggaran untuk user yang sedang login
+    // Ambil daftar anggaran untuk user yang sedang login, diurutkan dari yang terbaru ke yang terlama
     const anggaranList = await query(
-      "SELECT * FROM anggaran WHERE user_id = ? LIMIT ? OFFSET ?",
+      "SELECT * FROM anggaran WHERE user_id = ? ORDER BY start_date DESC LIMIT ? OFFSET ?",
       [user_id, parseInt(limit), offset]
     );
 
@@ -85,7 +85,60 @@ export const tampilkanAnggaran = async (req, res) => {
     );
     const total = totalResult.total;
 
-    // Hitung total terpakai dan sisa anggaran
+    // Hitung total terpakai, sisa anggaran, total saldo pemakaian, dan total saldo anggaran
+    let totalSaldoPemakaian = 0;
+    let totalSaldoAnggaran = 0;
+
+    for (let anggaran of anggaranList) {
+      const startDate = new Date(anggaran.start_date)
+        .toISOString()
+        .split("T")[0];
+      const endDate = new Date(anggaran.end_date).toISOString().split("T")[0];
+
+      const [totalTerpakaiResult] = await query(
+        `SELECT SUM(jumlah) as totalTerpakai
+         FROM transaksi
+         WHERE user_id = ? AND kategori_id = ? AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
+        [user_id, anggaran.kategori_id, startDate, endDate]
+      );
+
+      const totalTerpakai = totalTerpakaiResult.totalTerpakai || 0;
+      const sisaAnggaran = anggaran.jumlah - totalTerpakai;
+
+      anggaran.totalTerpakai = totalTerpakai;
+      anggaran.sisaAnggaran = sisaAnggaran;
+
+      // Tambahkan ke total saldo pemakaian dan total saldo anggaran
+      totalSaldoPemakaian += Number(totalTerpakai);
+      totalSaldoAnggaran += Number(anggaran.jumlah);
+    }
+
+    return res.status(200).json({
+      msg: "Daftar anggaran berhasil diambil",
+      data: anggaranList,
+      total, // Tambahkan total untuk pagination
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalSaldoPemakaian,
+      totalSaldoAnggaran,
+    });
+  } catch (error) {
+    console.log("Terjadi kesalahan", error);
+    return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+export const tampilkanTigaAnggaranTerbaru = async (req, res) => {
+  const user_id = req.user.user_id; // Mengambil user_id dari token yang telah diverifikasi
+
+  try {
+    // Ambil 3 anggaran terbaru untuk user yang sedang login
+    const anggaranList = await query(
+      "SELECT * FROM anggaran WHERE user_id = ? ORDER BY start_date DESC LIMIT 3",
+      [user_id]
+    );
+
+    // Hitung total terpakai dan sisa anggaran untuk setiap anggaran
     for (let anggaran of anggaranList) {
       const startDate = new Date(anggaran.start_date)
         .toISOString()
@@ -107,7 +160,7 @@ export const tampilkanAnggaran = async (req, res) => {
     }
 
     return res.status(200).json({
-      msg: "Daftar anggaran berhasil diambil",
+      msg: "Tiga anggaran terbaru berhasil diambil",
       data: anggaranList,
     });
   } catch (error) {

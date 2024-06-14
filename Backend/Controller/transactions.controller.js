@@ -148,9 +148,43 @@ export const getTransaksi = async (req, res) => {
     params.push(jenis_id);
   }
 
+  // Tambahkan ORDER BY untuk mengurutkan dari yang terbaru ke yang terlama
+  sql += " ORDER BY transaksi_date DESC";
+
   try {
     const result = await query(sql, params);
-    return res.status(200).json(result);
+
+    // Hitung total pemasukan
+    const [totalPemasukan] = await query(
+      "SELECT SUM(jumlah) AS total FROM transaksi WHERE user_id = ? AND jenis_id = 1",
+      [user_id]
+    );
+
+    // Hitung total pengeluaran
+    const [totalPengeluaran] = await query(
+      "SELECT SUM(jumlah) AS total FROM transaksi WHERE user_id = ? AND jenis_id = 2",
+      [user_id]
+    );
+
+    // Hitung total tabungan
+    const [totalTabungan] = await query(
+      "SELECT SUM(jumlah) AS total FROM transaksi WHERE user_id = ? AND jenis_id = 3",
+      [user_id]
+    );
+
+    // Hitung total saldo
+    const totalSaldo =
+      (totalPemasukan.total || 0) -
+      (totalPengeluaran.total || 0) -
+      (totalTabungan.total || 0);
+
+    return res.status(200).json({
+      totalSaldo,
+      totalPemasukan: totalPemasukan.total || 0,
+      totalPengeluaran: totalPengeluaran.total || 0,
+      totalTabungan: totalTabungan.total || 0,
+      transaksi: result,
+    });
   } catch (error) {
     console.log("Terjadi kesalahan", error);
     return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
@@ -225,6 +259,23 @@ export const deleteTransaksi = async (req, res) => {
     await query("DELETE FROM transaksi WHERE transaksi_id = ?", [transaksi_id]);
 
     return res.status(200).json({ msg: "Transaksi berhasil dihapus" });
+  } catch (error) {
+    console.log("Terjadi kesalahan", error);
+    return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+export const getTransaksiTerbaru = async (req, res) => {
+  const user_id = req.user.user_id; // Mengambil user_id dari token yang telah diverifikasi
+
+  try {
+    // Query untuk mendapatkan 3 transaksi terbaru
+    const result = await query(
+      "SELECT * FROM transaksi WHERE user_id = ? ORDER BY transaksi_date DESC, transaksi_id DESC LIMIT 3",
+      [user_id]
+    );
+
+    return res.status(200).json(result);
   } catch (error) {
     console.log("Terjadi kesalahan", error);
     return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
