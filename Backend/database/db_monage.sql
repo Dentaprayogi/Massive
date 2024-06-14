@@ -41,10 +41,10 @@ CREATE TABLE `anggaran` (
 --
 
 INSERT INTO `anggaran` (`anggaran_id`, `user_id`, `kategori_id`, `jumlah`, `start_date`, `end_date`) VALUES
-(2, 1, 1, '1000000', '2024-01-01', '2024-02-01'),
-(3, 1, 1, '1000000', '2023-11-01', '2023-12-01'),
-(4, 1, 2, '1000000', '2024-01-01', '2024-02-01'),
-(5, 1, 3, '1000000', '2024-01-01', '2024-02-01');
+(1, 1, 1, '1000000', '2024-01-01', '2024-02-01'),
+(2, 1, 1, '1000000', '2023-11-01', '2023-12-01'),
+(3, 1, 2, '1000000', '2024-01-01', '2024-02-01'),
+(4, 1, 3, '1000000', '2024-01-01', '2024-02-01');
 
 -- --------------------------------------------------------
 
@@ -137,13 +137,13 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`transaksi_id`, `user_id`, `jenis_id`, `kategori_id`, `jumlah`, `transaksi_date`, `keterangan`, `sumber_keuangan`) VALUES
-(2, 1, 2, 1, '20000', '2024-01-02', 'Makan Geprek', 'Gaji'),
-(3, 1, 2, 1, '20000', '2024-02-02', 'Makan Geprek', 'Gaji'),
-(5, 1, 1, 9, '4000000', '2024-01-01', 'Gaji Pokok', 'Gaji'),
-(7, 1, 3, 9, '1000000', '2023-01-05', 'Menabung di bulan Januari', 'Gaji'),
-(8, 1, 2, 1, '20000', '2024-01-08', 'Makan Geprek', 'Gaji'),
-(9, 1, 2, 1, '20000', '2024-01-16', 'Makan Soto', 'Gaji'),
-(10, 1, 3, 9, '100000', '2023-02-05', 'Menabung di bulan Februari', 'Gaji');
+(1, 1, 2, 1, '20000', '2024-01-02', 'Makan Geprek', 'Gaji'),
+(2, 1, 2, 1, '20000', '2024-02-02', 'Makan Geprek', 'Gaji'),
+(3, 1, 1, 9, '4000000', '2024-01-01', 'Gaji Pokok', 'Gaji'),
+(4, 1, 3, 9, '1000000', '2023-01-05', 'Menabung di bulan Januari', 'Gaji'),
+(5, 1, 2, 1, '20000', '2024-01-08', 'Makan Geprek', 'Gaji'),
+(6, 1, 2, 1, '20000', '2024-01-16', 'Makan Soto', 'Gaji'),
+(7, 1, 3, 9, '100000', '2023-02-05', 'Menabung di bulan Februari', 'Gaji');
 
 -- --------------------------------------------------------
 
@@ -168,6 +168,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `nama_depan`, `nama_belakang`, `jenis_kelamin`, `password`, `email`, `tlp`, `tgl_lahir`) VALUES
 (1, 'User', 'pengguna', 'laki-laki', '$2b$12$WczelCkrjCJNI/HTuLile.vmRfLHi6eeNYyAEBZVS5e148Kd0xuiG', 'user@user.com', '085600000000', '2002-01-01');
+
+-- email: user@user.com 
+-- password: 12345
 
 --
 -- Indexes for dumped tables
