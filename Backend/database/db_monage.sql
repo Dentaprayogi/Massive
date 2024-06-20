@@ -54,7 +54,7 @@ INSERT INTO `anggaran` (`anggaran_id`, `user_id`, `kategori_id`, `jumlah`, `star
 
 CREATE TABLE `jenistransaksi` (
   `jenis_id` int(11) NOT NULL,
-  `jenis` varchar(10) NOT NULL
+  `jenis` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `jenistransaksi` (
 
 INSERT INTO `jenistransaksi` (`jenis_id`, `jenis`) VALUES
 (1, 'pemasukan'),
-(2, 'pengeluara'),
+(2, 'pengeluaran'),
 (3, 'tabungan');
 
 -- --------------------------------------------------------

@@ -1,5 +1,18 @@
 import { query } from "../database/db.js";
 
+import { format, parse } from "date-fns";
+
+// Fungsi untuk mem-parsing string 'dd-mm-yyyy' menjadi objek Date
+const parseDateString = (dateString) => {
+  const [day, month, year] = dateString.split("-").map(Number);
+  return new Date(year, month - 1, day); // Month dimulai dari 0 (Januari = 0)
+};
+
+// Fungsi untuk mem-format objek Date menjadi string 'dd-mm-yyyy'
+const formatDateToString = (date) => {
+  return format(date, "dd-MM-yyyy");
+};
+
 export const tambahPengingat = async (req, res) => {
   const { tanggal, deskripsi } = req.body;
   const user_id = req.user.user_id; // Mengambil user_id dari token yang telah diverifikasi
@@ -10,17 +23,31 @@ export const tambahPengingat = async (req, res) => {
       return res.status(400).json({ msg: "Semua kolom wajib diisi" });
     }
 
+    // Parse tanggal dari string 'dd-mm-yyyy' ke objek Date
+    const parsedDate = parseDateString(tanggal);
+
+    // Validasi tanggal yang sudah di-parse
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ msg: "Format tanggal tidak valid" });
+    }
+
+    // Format tanggal menjadi string 'yyyy-MM-dd' untuk penyimpanan di database
+    const formattedDateForDB = format(parsedDate, "yyyy-MM-dd");
+
     // Tambahkan pengingat baru
     const result = await query(
       "INSERT INTO pengingat (user_id, tanggal, deskripsi) VALUES (?, ?, ?)",
-      [user_id, tanggal, deskripsi]
+      [user_id, formattedDateForDB, deskripsi]
     );
 
-    // Ambil data pengingat yang baru saja ditambahkan
+    // Ambil data pengingat yang baru saja ditambahkan dari database
     const [newReminder] = await query(
       "SELECT * FROM pengingat WHERE pengingat_id = ?",
       [result.insertId]
     );
+
+    // Format ulang tanggal dari 'yyyy-MM-dd' ke 'dd-mm-yyyy' sebelum dikirimkan sebagai response
+    newReminder.tanggal = formatDateToString(parsedDate);
 
     return res.status(201).json({
       msg: "Pengingat berhasil ditambahkan",
@@ -74,7 +101,15 @@ export const getPengingat = async (req, res) => {
       [user_id]
     );
 
-    return res.status(200).json(result);
+    // Mengonversi format tanggal dari 'yyyy-MM-dd' ke 'dd-mm-yyyy' sebelum mengirimkan sebagai response
+    const pengingatWithFormattedDate = result.map((pengingat) => {
+      return {
+        ...pengingat,
+        tanggal: formatDateToString(pengingat.tanggal),
+      };
+    });
+
+    return res.status(200).json(pengingatWithFormattedDate);
   } catch (error) {
     console.log("Terjadi kesalahan", error);
     return res.status(500).json({ msg: "Terjadi kesalahan pada server" });

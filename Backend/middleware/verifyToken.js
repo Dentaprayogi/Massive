@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.header("Authorization");
+  const authHeader = req.headers.authorization;
 
   if (!authHeader) {
     return res
@@ -25,12 +25,12 @@ const verifyToken = (req, res, next) => {
     }
 
     const verified = jwt.verify(token, secret);
-    req.user = verified;
+    req.user = verified; // Menyimpan informasi user ke req.user
     console.log("Token terverifikasi, user_id:", verified.user_id); // Debugging
     next();
   } catch (error) {
     console.error("Token tidak valid:", error);
-    res.status(400).json({ msg: "Token tidak valid" });
+    return res.status(403).json({ msg: "Token tidak valid" });
   }
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/landing-page.css";
 import Header from "../components/Header";
 import Home from "../components/Home";
@@ -12,6 +13,8 @@ import SignUpOverlay from "../components/SignUpOverlay";
 const LandingPage = () => {
   const [showLoginOverlay, setShowLoginOverlay] = useState(false);
   const [showSignUpOverlay, setShowSignUpOverlay] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
     setShowLoginOverlay(true);
@@ -36,6 +39,11 @@ const LandingPage = () => {
     setShowLoginOverlay(true);
   };
 
+  const handleLoginSuccess = () => {
+    // Tambahkan logika yang perlu dilakukan setelah login berhasil
+    navigate("/dashboard");
+  };
+
   return (
     <React.StrictMode>
       <Header
@@ -51,6 +59,7 @@ const LandingPage = () => {
         show={showLoginOverlay}
         onClose={handleCloseOverlay}
         onRegister={handleShowSignUp}
+        onLoginSuccess={handleLoginSuccess} // Tambahkan callback ini
       />
       <SignUpOverlay
         show={showSignUpOverlay}

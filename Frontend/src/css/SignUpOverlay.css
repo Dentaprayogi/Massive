@@ -1,6 +1,6 @@
 .sign-overlay {
   position: fixed;
-  top: 0;
+  top: 30px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -12,7 +12,7 @@
 
 .sign-overlay-content {
   background-color: white;
-  padding: 40px;
+  padding: 20px;
   border-radius: 10px;
   position: relative;
   width: 800px;
@@ -95,4 +95,14 @@
   color: rgb(35, 105, 95);
   text-decoration: none;
   font-weight: bold;
+}
+
+.input-error {
+  border: 1px solid red; /* Menjadikan border merah saat terjadi error */
+}
+
+.error-message {
+  color: red; /* Warna teks merah untuk pesan kesalahan */
+  font-size: 14px; /* Ukuran teks untuk pesan kesalahan */
+  margin-top: 5px; /* Jarak atas dari input field */
 }

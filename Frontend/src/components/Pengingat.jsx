@@ -1,10 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Logo from "../assets/pengingat.png";
 import TambahPengingatOverlay from "./TambahPengingatOverlay";
 import "../css/Pengingat.css";
 
 function Pengingat() {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [pengingatList, setPengingatList] = useState([]);
+
+  useEffect(() => {
+    fetchPengingat();
+  }, []);
+
+  const fetchPengingat = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token tidak ditemukan. Harap login terlebih dahulu.");
+      }
+
+      const config = {
+        headers: {
+          Authorization: `${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        "http://localhost:3000/api/tampilkan_pengingat",
+        config
+      );
+
+      if (response.status !== 200) {
+        throw new Error(
+          `Gagal mengambil data pengingat: ${response.statusText}`
+        );
+      }
+
+      setPengingatList(response.data); // Perbarui state pengingatList dengan data dari server
+    } catch (error) {
+      console.error("Error fetching pengingat data:", error.message);
+    }
+  };
 
   const handleOpenOverlay = () => {
     setIsOverlayVisible(true);
@@ -12,6 +48,75 @@ function Pengingat() {
 
   const handleCloseOverlay = () => {
     setIsOverlayVisible(false);
+  };
+
+  const handleTambahPengingat = async (newPengingat) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token tidak ditemukan. Harap login terlebih dahulu.");
+      }
+
+      const config = {
+        headers: {
+          Authorization: `${token}`,
+        },
+      };
+
+      const response = await axios.post(
+        "http://localhost:3000/api/tambah_pengingat",
+        newPengingat,
+        config
+      );
+
+      if (response.status === 201) {
+        console.log("Pengingat berhasil ditambahkan:", response.data.msg);
+        // Ambil data pengingat yang baru ditambahkan dari respons
+        const addedPengingat = response.data.data;
+
+        // Perbarui state pengingatList dengan menambahkan pengingat baru
+        setPengingatList([...pengingatList, addedPengingat]);
+
+        // Tutup overlay setelah berhasil tambah pengingat
+        handleCloseOverlay();
+      } else {
+        throw new Error(`Gagal menambah pengingat: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error adding pengingat:", error.message);
+    }
+  };
+
+  const handleHapusPengingat = async (pengingat_id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token tidak ditemukan. Harap login terlebih dahulu.");
+      }
+
+      const config = {
+        headers: {
+          Authorization: `${token}`,
+        },
+      };
+
+      const response = await axios.delete(
+        `http://localhost:3000/api/hapus_pengingat/${pengingat_id}`,
+        config
+      );
+
+      if (response.status !== 200) {
+        throw new Error(`Gagal menghapus pengingat: ${response.statusText}`);
+      }
+
+      // Setelah berhasil menghapus, perbarui daftar pengingat lokal
+      const updatedPengingatList = pengingatList.filter(
+        (pengingat) => pengingat.pengingat_id !== pengingat_id
+      );
+      setPengingatList(updatedPengingatList);
+    } catch (error) {
+      console.error("Error deleting pengingat:", error.message);
+    }
   };
 
   return (
@@ -29,36 +134,31 @@ function Pengingat() {
                 <button onClick={handleOpenOverlay}>Tambah Pengingat</button>
               </div>
             </div>
-            <div className="pengingat-9">
-              <div className="pengingat-10">
-                <div className="pengingat-11" />
-                <div className="pengingat-12">
-                  <span className="span-bold">24 Mei 2024</span> - Bayar Tagihan
-                  Listrik
+            {pengingatList.map((pengingat) => (
+              <div key={pengingat.pengingat_id} className="pengingat-9">
+                <div className="pengingat-10">
+                  <div className="pengingat-11" />
+                  <div className="pengingat-12">
+                    <span className="span-bold">{pengingat.tanggal}</span> -{" "}
+                    {pengingat.deskripsi}
+                  </div>
+                </div>
+                <div className="pengingat-13">
+                  <button
+                    onClick={() => handleHapusPengingat(pengingat.pengingat_id)}
+                  >
+                    Hapus
+                  </button>
                 </div>
               </div>
-              <div className="pengingat-13">
-                <button>Hapus</button>
-              </div>
-            </div>
-            <div className="pengingat-14">
-              <div className="pengingat-15">
-                <div className="pengingat-16" />
-                <div className="pengingat-17">
-                  <span className="span-bold">30 Mei 2024</span> - Bayar Air
-                  PDAM
-                </div>
-              </div>
-              <div className="pengingat-13">
-                <button>Hapus</button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
       <TambahPengingatOverlay
         isVisible={isOverlayVisible}
         onClose={handleCloseOverlay}
+        onTambahPengingat={handleTambahPengingat}
       />
     </div>
   );

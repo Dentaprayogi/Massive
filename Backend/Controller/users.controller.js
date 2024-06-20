@@ -119,3 +119,27 @@ export const getUsers = async (req, res) => {
     return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
   }
 };
+
+export const getUserProfile = async (req, res) => {
+  const user_id = req.user.user_id; // Mengambil user_id dari token yang telah diverifikasi
+
+  try {
+    // Ambil data pengguna berdasarkan user_id
+    const userResult = await query(
+      "SELECT nama_depan, nama_belakang, jenis_kelamin, email, tlp, tgl_lahir FROM users WHERE user_id = ?",
+      [user_id]
+    );
+
+    // Periksa apakah pengguna ada
+    if (userResult.length === 0) {
+      return res.status(404).json({ msg: "Data pengguna tidak ditemukan" });
+    }
+
+    // Mengembalikan data pengguna
+    const userData = userResult[0];
+    return res.status(200).json({ success: true, data: userData });
+  } catch (error) {
+    console.error("Terjadi kesalahan", error);
+    return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};

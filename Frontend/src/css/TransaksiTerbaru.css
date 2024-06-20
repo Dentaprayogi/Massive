@@ -102,6 +102,13 @@
   font-family: Poppins, sans-serif;
   font-weight: 700;
 }
+
+.color-text-tabungan {
+  color: rgb(39, 193, 83);
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+}
+
 .transaksi-terbaru-12 {
   color: var(--black-1, #1d1d1d);
   font-family: Poppins, sans-serif;

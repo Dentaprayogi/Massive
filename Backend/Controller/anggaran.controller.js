@@ -1,14 +1,26 @@
 import { query } from "../database/db.js";
 
 export const tambahAnggaran = async (req, res) => {
-  const { kategori_id, jumlah, start_date, end_date } = req.body;
+  const { kategori, jumlah, start_date, end_date } = req.body;
   const user_id = req.user.user_id; // Mengambil user_id dari token yang telah diverifikasi
 
   try {
     // Validasi input
-    if (!kategori_id || !jumlah || !start_date || !end_date) {
+    if (!kategori || !jumlah || !start_date || !end_date) {
       return res.status(400).json({ msg: "Semua kolom wajib diisi" });
     }
+
+    // Cari kategori_id berdasarkan nama kategori
+    const [kategoriData] = await query(
+      "SELECT kategori_id FROM kategori WHERE kategori = ?",
+      [kategori]
+    );
+
+    if (!kategoriData) {
+      return res.status(400).json({ msg: "Kategori tidak ditemukan" });
+    }
+
+    const kategori_id = kategoriData.kategori_id;
 
     // Tambahkan anggaran baru
     const result = await query(
@@ -18,7 +30,10 @@ export const tambahAnggaran = async (req, res) => {
 
     // Ambil data anggaran yang baru saja ditambahkan
     const [newAnggaran] = await query(
-      "SELECT * FROM anggaran WHERE anggaran_id = ?",
+      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, a.start_date, a.end_date
+       FROM anggaran a
+       JOIN kategori k ON a.kategori_id = k.kategori_id
+       WHERE a.anggaran_id = ?`,
       [result.insertId]
     );
 
@@ -74,7 +89,12 @@ export const tampilkanAnggaran = async (req, res) => {
 
     // Ambil daftar anggaran untuk user yang sedang login, diurutkan dari yang terbaru ke yang terlama
     const anggaranList = await query(
-      "SELECT * FROM anggaran WHERE user_id = ? ORDER BY start_date DESC LIMIT ? OFFSET ?",
+      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, a.start_date, a.end_date
+       FROM anggaran a
+       JOIN kategori k ON a.kategori_id = k.kategori_id
+       WHERE a.user_id = ?
+       ORDER BY a.start_date DESC
+       LIMIT ? OFFSET ?`,
       [user_id, parseInt(limit), offset]
     );
 
@@ -98,8 +118,8 @@ export const tampilkanAnggaran = async (req, res) => {
       const [totalTerpakaiResult] = await query(
         `SELECT SUM(jumlah) as totalTerpakai
          FROM transaksi
-         WHERE user_id = ? AND kategori_id = ? AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
-        [user_id, anggaran.kategori_id, startDate, endDate]
+         WHERE user_id = ? AND kategori_id = (SELECT kategori_id FROM kategori WHERE kategori = ?) AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
+        [user_id, anggaran.kategori, startDate, endDate]
       );
 
       const totalTerpakai = totalTerpakaiResult.totalTerpakai || 0;
@@ -134,29 +154,43 @@ export const tampilkanTigaAnggaranTerbaru = async (req, res) => {
   try {
     // Ambil 3 anggaran terbaru untuk user yang sedang login
     const anggaranList = await query(
-      "SELECT * FROM anggaran WHERE user_id = ? ORDER BY start_date DESC LIMIT 3",
+      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, 
+              DATE_FORMAT(a.start_date, '%d-%m-%Y') AS start_date,
+              DATE_FORMAT(a.end_date, '%d-%m-%Y') AS end_date
+       FROM anggaran a
+       JOIN kategori k ON a.kategori_id = k.kategori_id
+       WHERE a.user_id = ?
+       ORDER BY a.start_date DESC
+       LIMIT 3`,
       [user_id]
     );
 
     // Hitung total terpakai dan sisa anggaran untuk setiap anggaran
     for (let anggaran of anggaranList) {
-      const startDate = new Date(anggaran.start_date)
-        .toISOString()
-        .split("T")[0];
-      const endDate = new Date(anggaran.end_date).toISOString().split("T")[0];
+      try {
+        const startDate = anggaran.start_date; // Pastikan format tanggal sudah sesuai
+        const endDate = anggaran.end_date; // Pastikan format tanggal sudah sesuai
 
-      const [totalTerpakaiResult] = await query(
-        `SELECT SUM(jumlah) as totalTerpakai
-         FROM transaksi
-         WHERE user_id = ? AND kategori_id = ? AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
-        [user_id, anggaran.kategori_id, startDate, endDate]
-      );
+        const [totalTerpakaiResult] = await query(
+          `SELECT SUM(jumlah) as totalTerpakai
+           FROM transaksi
+           WHERE user_id = ? AND kategori_id = (SELECT kategori_id FROM kategori WHERE kategori = ?) AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
+          [user_id, anggaran.kategori, startDate, endDate]
+        );
 
-      const totalTerpakai = totalTerpakaiResult.totalTerpakai || 0;
-      const sisaAnggaran = anggaran.jumlah - totalTerpakai;
+        const totalTerpakai = totalTerpakaiResult.totalTerpakai || 0;
+        const sisaAnggaran = anggaran.jumlah - totalTerpakai;
 
-      anggaran.totalTerpakai = totalTerpakai;
-      anggaran.sisaAnggaran = sisaAnggaran;
+        anggaran.totalTerpakai = totalTerpakai;
+        anggaran.sisaAnggaran = sisaAnggaran;
+      } catch (error) {
+        console.error(
+          "Terjadi kesalahan dalam menghitung total terpakai dan sisa anggaran:",
+          error
+        );
+        anggaran.totalTerpakai = 0;
+        anggaran.sisaAnggaran = anggaran.jumlah; // Anggaran keseluruhan dikembalikan jika terjadi kesalahan
+      }
     }
 
     return res.status(200).json({

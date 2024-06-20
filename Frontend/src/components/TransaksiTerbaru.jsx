@@ -1,9 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Pemasukan from "../assets/pemasukan.png";
 import Pengeluaran from "../assets/pengeluaran.png";
+import Tabungan from "../assets/tabungan.png"; // Gambar untuk tabungan
 import "../css/TransaksiTerbaru.css";
 
 function TransaksiTerbaru() {
+  const [transaksiTerbaru, setTransaksiTerbaru] = useState([]);
+
+  useEffect(() => {
+    const fetchTransaksiTerbaru = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("Token tidak tersedia.");
+          return;
+        }
+
+        const response = await fetch(
+          "http://localhost:3000/api/transaksi_terbaru",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Gagal memuat data transaksi terbaru.");
+        }
+
+        const data = await response.json();
+        setTransaksiTerbaru(data); // Simpan data transaksi terbaru ke state
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchTransaksiTerbaru();
+  }, []); // Kosongkan dependency array untuk menjalankan sekali saat komponen dimuat
+
   return (
     <div id="transaksi-terbaru">
       <div className="transaksi-terbaru">
@@ -11,109 +46,51 @@ function TransaksiTerbaru() {
         <div className="transaksi-terbaru-3">
           <div className="transaksi-terbaru-4">Transaksi Terbaru</div>
           <div className="transaksi-terbaru-5">
-            <div className="transaksi-terbaru-6">
-              <div className="transaksi-terbaru-column">
-                <div className="transaksi-terbaru-8">
-                  <img src={Pemasukan} alt="" />
-                  <div className="transaksi-terbaru-9">Gaji bulan April </div>
-                </div>
-                <div className="column00">
-                  <div className="color-text-pemasukan">Rp 3.500.000 </div>
-                  <div className="transaksi-terbaru-12">25-04-2024</div>
-                </div>
-              </div>
-            </div>
-            <div className="transaksi-terbaru-6">
-              <div className="transaksi-terbaru-column">
-                <div className="transaksi-terbaru-8">
-                  <img src={Pengeluaran} alt="" />
-                  <div className="transaksi-terbaru-9">Uang Makan Siang </div>
-                </div>
-                <div className="column00">
-                  <div className="color-text-pengeluaran">Rp 200.000 </div>
-                  <div className="transaksi-terbaru-12">25-04-2024</div>
-                </div>
-              </div>
-            </div>
-            <div className="transaksi-terbaru-6">
-              <div className="transaksi-terbaru-column">
-                <div className="transaksi-terbaru-8">
-                  <img src={Pemasukan} alt="" />
-                  <div className="transaksi-terbaru-9">Gaji bulan April </div>
-                </div>
-                <div className="column00">
-                  <div className="color-text-pemasukan">Rp 3.500.000 </div>
-                  <div className="transaksi-terbaru-12">25-04-2024</div>
-                </div>
-              </div>
-            </div>
-
-            {/* <div className="transaksi-terbaru-6">
-              <div className="transaksi-terbaru-7">
+            {transaksiTerbaru.map((transaksi, index) => (
+              <div className="transaksi-terbaru-6" key={index}>
                 <div className="transaksi-terbaru-column">
                   <div className="transaksi-terbaru-8">
-                    <img src={Pemasukan} alt="" />
-                    <div className="transaksi-terbaru-9">Uang Makan Siang </div>
+                    <img
+                      src={
+                        transaksi.jenis === "pemasukan"
+                          ? Pemasukan
+                          : transaksi.jenis === "pengeluaran"
+                          ? Pengeluaran
+                          : Tabungan // Gunakan gambar Tabungan untuk jenis "tabungan"
+                      }
+                      alt=""
+                    />
+                    <div
+                      className={
+                        transaksi.jenis === "pemasukan"
+                          ? "transaksi-terbaru-9 color-text-pemasukan"
+                          : transaksi.jenis === "pengeluaran"
+                          ? "transaksi-terbaru-9 color-text-pengeluaran"
+                          : "transaksi-terbaru-9 color-text-tabungan" // Gunakan kelas CSS untuk warna teks tabungan
+                      }
+                    >
+                      {transaksi.keterangan}
+                    </div>
                   </div>
-                </div>
-                <div className="transaksi-terbaru-column-2">
-                  <div className="transaksi-terbaru-10">
-                    <div className="transaksi-terbaru-18">Rp 00.000 </div>
-                    <div className="transaksi-terbaru-12">25-04-2024</div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-            {/* <div className="transaksi-terbaru-13">
-              <div className="transaksi-terbaru-14">
-                <div className="transaksi-terbaru-3">
-                  <div className="transaksi-terbaru-15">
-                    <img src="" alt="" />
-                    <div className="transaksi-terbaru-16">Uang makan siang</div>
-                  </div>
-                </div>
-                <div className="transaksi-terbaru-4">
-                  <div className="transaksi-terbaru-17">
-                    <div className="transaksi-terbaru-18">Rp. 200.000</div>
-                    <div className="transaksi-terbaru-19">25-04-2024</div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-            {/* <div className="transaksi-terbaru-20">
-              <div className="transaksi-terbaru-21">
-                <div className="transaksi-terbaru-column-5">
-                  <div className="transaksi-terbaru-22">
-                    <img src="" alt="" />
-                    <div className="transaksi-terbaru-23">
-                      Gaji bulan Maret{" "}
+                  <div className="column00">
+                    <div
+                      className={
+                        transaksi.jenis === "pemasukan"
+                          ? "color-text-pemasukan"
+                          : transaksi.jenis === "pengeluaran"
+                          ? "color-text-pengeluaran"
+                          : "color-text-tabungan" // Gunakan kelas CSS untuk warna teks tabungan
+                      }
+                    >
+                      {`Rp ${transaksi.jumlah}`}
+                    </div>
+                    <div className="transaksi-terbaru-12">
+                      {transaksi.transaksi_date}
                     </div>
                   </div>
                 </div>
-                <div className="transaksi-terbaru-column-6">
-                  <div className="transaksi-terbaru-24">
-                    <div className="transaksi-terbaru-25">Rp 3.500.000 </div>
-                    <div className="transaksi-terbaru-26">25-03-2024</div>
-                  </div>
-                </div>
               </div>
-            </div> */}
-            {/* <div className="transaksi-terbaru-6">
-              <div className="transaksi-terbaru-7">
-                <div className="transaksi-terbaru-column">
-                  <div className="transaksi-terbaru-8">
-                    <img src={Pemasukan} alt="" />
-                    <div className="transaksi-terbaru-9">Gaji bulan Maret </div>
-                  </div>
-                </div>
-                <div className="transaksi-terbaru-column-2">
-                  <div className="transaksi-terbaru-10">
-                    <div className="transaksi-terbaru-11">Rp 3.500.000 </div>
-                    <div className="transaksi-terbaru-12">25-04-2024</div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
+            ))}
           </div>
         </div>
       </div>
