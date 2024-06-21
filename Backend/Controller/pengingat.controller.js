@@ -1,16 +1,18 @@
 import { query } from "../database/db.js";
-
 import { format, parse } from "date-fns";
 
-// Fungsi untuk mem-parsing string 'dd-mm-yyyy' menjadi objek Date
+// Fungsi untuk mem-parsing string 'MM-dd-yyyy' menjadi objek Date
 const parseDateString = (dateString) => {
-  const [day, month, year] = dateString.split("-").map(Number);
+  if (typeof dateString !== "string") {
+    throw new TypeError("dateString should be a string");
+  }
+  const [month, day, year] = dateString.split("-").map(Number);
   return new Date(year, month - 1, day); // Month dimulai dari 0 (Januari = 0)
 };
 
-// Fungsi untuk mem-format objek Date menjadi string 'dd-mm-yyyy'
+// Fungsi untuk mem-format objek Date menjadi string 'MM-dd-yyyy'
 const formatDateToString = (date) => {
-  return format(date, "dd-MM-yyyy");
+  return format(date, "MM-dd-yyyy");
 };
 
 export const tambahPengingat = async (req, res) => {
@@ -23,7 +25,7 @@ export const tambahPengingat = async (req, res) => {
       return res.status(400).json({ msg: "Semua kolom wajib diisi" });
     }
 
-    // Parse tanggal dari string 'dd-mm-yyyy' ke objek Date
+    // Parse tanggal dari string 'MM-dd-yyyy' ke objek Date
     const parsedDate = parseDateString(tanggal);
 
     // Validasi tanggal yang sudah di-parse
@@ -46,8 +48,8 @@ export const tambahPengingat = async (req, res) => {
       [result.insertId]
     );
 
-    // Format ulang tanggal dari 'yyyy-MM-dd' ke 'dd-mm-yyyy' sebelum dikirimkan sebagai response
-    newReminder.tanggal = formatDateToString(parsedDate);
+    // Format ulang tanggal dari 'yyyy-MM-dd' ke 'MM-dd-yyyy' sebelum dikirimkan sebagai response
+    newReminder.tanggal = formatDateToString(new Date(newReminder.tanggal));
 
     return res.status(201).json({
       msg: "Pengingat berhasil ditambahkan",
@@ -101,11 +103,12 @@ export const getPengingat = async (req, res) => {
       [user_id]
     );
 
-    // Mengonversi format tanggal dari 'yyyy-MM-dd' ke 'dd-mm-yyyy' sebelum mengirimkan sebagai response
+    // Mengonversi format tanggal dari 'yyyy-MM-dd' ke 'MM-dd-yyyy' sebelum mengirimkan sebagai response
     const pengingatWithFormattedDate = result.map((pengingat) => {
+      const parsedDate = new Date(pengingat.tanggal);
       return {
         ...pengingat,
-        tanggal: formatDateToString(pengingat.tanggal),
+        tanggal: formatDateToString(parsedDate),
       };
     });
 

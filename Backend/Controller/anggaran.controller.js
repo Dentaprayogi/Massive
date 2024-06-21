@@ -89,7 +89,9 @@ export const tampilkanAnggaran = async (req, res) => {
 
     // Ambil daftar anggaran untuk user yang sedang login, diurutkan dari yang terbaru ke yang terlama
     const anggaranList = await query(
-      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, a.start_date, a.end_date
+      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, 
+              DATE_FORMAT(a.start_date, '%m-%d-%Y') AS start_date,
+              DATE_FORMAT(a.end_date, '%m-%d-%Y') AS end_date
        FROM anggaran a
        JOIN kategori k ON a.kategori_id = k.kategori_id
        WHERE a.user_id = ?
@@ -110,10 +112,9 @@ export const tampilkanAnggaran = async (req, res) => {
     let totalSaldoAnggaran = 0;
 
     for (let anggaran of anggaranList) {
-      const startDate = new Date(anggaran.start_date)
-        .toISOString()
-        .split("T")[0];
-      const endDate = new Date(anggaran.end_date).toISOString().split("T")[0];
+      // Format tanggal sudah diubah menggunakan DATE_FORMAT di query SQL
+      const startDate = anggaran.start_date;
+      const endDate = anggaran.end_date;
 
       const [totalTerpakaiResult] = await query(
         `SELECT SUM(jumlah) as totalTerpakai
@@ -155,8 +156,8 @@ export const tampilkanTigaAnggaranTerbaru = async (req, res) => {
     // Ambil 3 anggaran terbaru untuk user yang sedang login
     const anggaranList = await query(
       `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, 
-              DATE_FORMAT(a.start_date, '%d-%m-%Y') AS start_date,
-              DATE_FORMAT(a.end_date, '%d-%m-%Y') AS end_date
+              DATE_FORMAT(a.start_date, '%m-%d-%Y') AS start_date,
+              DATE_FORMAT(a.end_date, '%m-%d-%Y') AS end_date
        FROM anggaran a
        JOIN kategori k ON a.kategori_id = k.kategori_id
        WHERE a.user_id = ?
@@ -167,30 +168,22 @@ export const tampilkanTigaAnggaranTerbaru = async (req, res) => {
 
     // Hitung total terpakai dan sisa anggaran untuk setiap anggaran
     for (let anggaran of anggaranList) {
-      try {
-        const startDate = anggaran.start_date; // Pastikan format tanggal sudah sesuai
-        const endDate = anggaran.end_date; // Pastikan format tanggal sudah sesuai
+      // Format tanggal sudah diubah menggunakan DATE_FORMAT di query SQL
+      const startDate = anggaran.start_date;
+      const endDate = anggaran.end_date;
 
-        const [totalTerpakaiResult] = await query(
-          `SELECT SUM(jumlah) as totalTerpakai
-           FROM transaksi
-           WHERE user_id = ? AND kategori_id = (SELECT kategori_id FROM kategori WHERE kategori = ?) AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
-          [user_id, anggaran.kategori, startDate, endDate]
-        );
+      const [totalTerpakaiResult] = await query(
+        `SELECT SUM(jumlah) as totalTerpakai
+         FROM transaksi
+         WHERE user_id = ? AND kategori_id = (SELECT kategori_id FROM kategori WHERE kategori = ?) AND jenis_id = 2 AND transaksi_date BETWEEN ? AND ?`,
+        [user_id, anggaran.kategori, startDate, endDate]
+      );
 
-        const totalTerpakai = totalTerpakaiResult.totalTerpakai || 0;
-        const sisaAnggaran = anggaran.jumlah - totalTerpakai;
+      const totalTerpakai = totalTerpakaiResult.totalTerpakai || 0;
+      const sisaAnggaran = anggaran.jumlah - totalTerpakai;
 
-        anggaran.totalTerpakai = totalTerpakai;
-        anggaran.sisaAnggaran = sisaAnggaran;
-      } catch (error) {
-        console.error(
-          "Terjadi kesalahan dalam menghitung total terpakai dan sisa anggaran:",
-          error
-        );
-        anggaran.totalTerpakai = 0;
-        anggaran.sisaAnggaran = anggaran.jumlah; // Anggaran keseluruhan dikembalikan jika terjadi kesalahan
-      }
+      anggaran.totalTerpakai = totalTerpakai;
+      anggaran.sisaAnggaran = sisaAnggaran;
     }
 
     return res.status(200).json({

@@ -29,7 +29,10 @@ const App = () => {
 
         {/* Transaksi */}
         <Route path="/transaction" element={<Transaction />} />
-        <Route path="/edittransaction" element={<EditTransactions />} />
+        <Route
+          path="/edittransaction/:transaksi_id"
+          element={<EditTransactions />}
+        />
         <Route path="/addtransaction" element={<AddTransaction />} />
         <Route path="/addincome" element={<AddIncome />} />
         <Route path="/addsaving" element={<AddSaving />} />

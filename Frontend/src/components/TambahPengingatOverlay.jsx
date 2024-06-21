@@ -21,8 +21,9 @@ function TambahPengingatOverlay({ isVisible, onClose }) {
         },
       };
 
-      // Ubah format tanggal dari input type="date" (yyyy-mm-dd) menjadi dd-mm-yyyy
-      const formattedTanggal = tanggal.split("-").reverse().join("-");
+      // Ubah format tanggal dari input type="date" (yyyy-mm-dd) menjadi MM-dd-yyyy
+      const [year, month, day] = tanggal.split("-");
+      const formattedTanggal = `${month}-${day}-${year}`;
 
       const data = {
         tanggal: formattedTanggal,
