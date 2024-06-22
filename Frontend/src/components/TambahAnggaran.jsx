@@ -4,7 +4,6 @@ import "../css/TambahAnggaran.css";
 
 const TambahAnggaran = ({ onClose }) => {
   const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const navigate = useNavigate();
@@ -25,22 +24,66 @@ const TambahAnggaran = ({ onClose }) => {
 
   const handleBack = () => {
     navigate("/laporananggaran");
+    onClose();
   };
 
-  const handleSave = () => {
-    // Logika penyimpanan anggaran
-    console.log({
-      amount,
-      category: selectedCategory, // Use selectedCategory instead of category
-      startDate,
-      endDate,
-    });
-    navigate("/laporananggaran");
+  const handleSave = async () => {
+    try {
+      // Ambil token dari localStorage
+      const token = localStorage.getItem("token");
+
+      // Validasi input
+      if (!amount || !selectedCategory || !startDate || !endDate) {
+        alert("Semua kolom wajib diisi");
+        return;
+      }
+
+      // Ubah format tanggal sebelum dikirim ke backend
+      const formattedStartDate = formatDate(startDate);
+      const formattedEndDate = formatDate(endDate);
+
+      // Kirim data anggaran ke backend
+      const response = await fetch(
+        "http://localhost:3000/api/tambah_anggaran",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({
+            kategori: selectedCategory,
+            jumlah: amount,
+            start_date: formattedStartDate,
+            end_date: formattedEndDate,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Gagal menambahkan anggaran");
+      }
+
+      const data = await response.json();
+      console.log("Anggaran berhasil ditambahkan:", data);
+
+      navigate("/laporananggaran");
+      onClose();
+    } catch (error) {
+      console.error("Terjadi kesalahan:", error.message);
+      alert("Terjadi kesalahan saat menyimpan anggaran");
+    }
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setShowCategoryOverlay(false);
+  };
+
+  // Fungsi untuk mengubah format tanggal dari yyyy-mm-dd ke MM-dd-yyyy
+  const formatDate = (inputDate) => {
+    const [year, month, day] = inputDate.split("-");
+    return `${month}-${day}-${year}`;
   };
 
   return (
@@ -53,10 +96,12 @@ const TambahAnggaran = ({ onClose }) => {
         <div className="tambah-anggaran-form-group">
           <label>Jumlah anggaran</label>
           <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="tambah-anggaran-form-input"
+            type="text"
+            value={amount.toLocaleString("id-ID")}
+            onChange={(e) =>
+              setAmount(Number(e.target.value.replace(/\./g, "")))
+            }
+            inputMode="numeric"
           />
         </div>
         <div className="tambah-anggaran-form-group">

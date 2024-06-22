@@ -1,15 +1,147 @@
-import React from 'react';
-import { FaUtensils, FaShoppingCart, FaPlusCircle } from 'react-icons/fa';
-import '../css/LaporanAnggaran.css';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  FaUtensils,
+  FaShoppingCart,
+  FaPlusCircle,
+  FaTrash,
+  FaGasPump,
+  FaCar,
+  FaFileInvoice,
+  FaPaw,
+  FaFirstAid,
+  FaMoneyBillAlt,
+} from "react-icons/fa";
+import "../css/LaporanAnggaran.css";
+import TambahAnggaran from "./TambahAnggaran";
+import AnggaranKosong from "../pages/AnggranKosong";
 
 function LaporanAnggaran() {
-  const navigate = useNavigate();
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [anggaranList, setAnggaranList] = useState([]);
+  const [totalSaldoPemakaian, setTotalSaldoPemakaian] = useState(0);
+  const [totalSaldoAnggaran, setTotalSaldoAnggaran] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAnggaran = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/tampilkan_anggaran",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        const { data, totalSaldoPemakaian, totalSaldoAnggaran } = response.data;
+
+        setAnggaranList(data);
+        setTotalSaldoPemakaian(totalSaldoPemakaian);
+        setTotalSaldoAnggaran(totalSaldoAnggaran);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchAnggaran();
+  }, []);
 
   const handleTambahAnggaran = () => {
-    navigate("/tambahanggaran");
+    setShowOverlay(true);
   };
 
+  const handleCloseOverlay = () => {
+    setShowOverlay(false);
+  };
+
+  const handleDeleteAnggaran = async (anggaranId) => {
+    console.log(`Menghapus anggaran dengan ID ${anggaranId}`);
+    const token = localStorage.getItem("token");
+
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/hapus_anggaran/${anggaranId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      // Setelah berhasil menghapus anggaran, ambil data anggaran yang terbaru
+      const updatedAnggaranList = anggaranList.filter(
+        (anggaran) => anggaran.anggaran_id !== anggaranId
+      );
+      setAnggaranList(updatedAnggaranList);
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
+  };
+
+  // Fungsi untuk mendapatkan bulan dan tahun saat ini
+  const getCurrentMonthYear = () => {
+    const now = new Date();
+    const monthNames = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear();
+    return `${month} ${year}`;
+  };
+
+  const currentMonthYear = getCurrentMonthYear();
+
+  // Fungsi untuk memetakan kategori ke ikon yang sesuai
+  const mapCategoryToIcon = (kategori) => {
+    switch (kategori.toLowerCase()) {
+      case "makan dan minum":
+        return <FaUtensils />;
+      case "belanja":
+        return <FaShoppingCart />;
+      case "bensin":
+        return <FaGasPump />;
+      case "transportasi":
+        return <FaCar />;
+      case "tagihan":
+        return <FaFileInvoice />;
+      case "peliharaan":
+        return <FaPaw />;
+      case "kesehatan":
+        return <FaFirstAid />;
+      case "pengeluaran lainnya":
+        return <FaMoneyBillAlt />;
+      default:
+        return null;
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Jika tidak ada anggaran, tampilkan komponen AturAnggaran
+  if (anggaranList.length === 0) {
+    return <AnggaranKosong />;
+  }
+
+  // Jika ada anggaran, tampilkan daftar anggaran
   return (
     <div className="container">
       <main>
@@ -17,42 +149,72 @@ function LaporanAnggaran() {
         <section className="summary">
           <div className="summary-item">
             <h3>Total Saldo Pemakaian</h3>
-            <p className="amount">Rp. 1.220.000</p>
-            <span>Mei 2024</span>
+            <p className="amount">Rp. {totalSaldoPemakaian}</p>
+            <span>{currentMonthYear}</span>
           </div>
           <div className="summary-item">
             <h3>Total Saldo Anggaran</h3>
-            <p className="amount">Rp. 1.250.000</p>
-            <span>Mei 2024</span>
+            <p className="amount">Rp. {totalSaldoAnggaran}</p>
+            <span>{currentMonthYear}</span>
           </div>
         </section>
         <section className="budget">
-          <BudgetItem
-            icon={<FaUtensils />}
-            title="Makan dan Minum"
-            used="Rp. 55.000"
-            budget="Rp. 750.000"
-            remaining="Rp. 695.000"
-            percentage={7}
-          />
-          <BudgetItem
-            icon={<FaShoppingCart />}
-            title="Belanja"
-            used="Rp. 150.000"
-            budget="Rp. 750.000"
-            remaining="Rp. 600.000"
-            percentage={20}
-          />
+          {anggaranList.map((anggaran) => (
+            <BudgetItem
+              key={anggaran.anggaran_id}
+              icon={mapCategoryToIcon(anggaran.kategori)}
+              title={anggaran.kategori}
+              used={`Rp. ${anggaran.totalTerpakai}`}
+              budget={`Rp. ${anggaran.jumlah}`}
+              remaining={`Rp. ${anggaran.sisaAnggaran}`}
+              percentage={Math.round(
+                (anggaran.totalTerpakai / anggaran.jumlah) * 100
+              )}
+              onDelete={() => handleDeleteAnggaran(anggaran.anggaran_id)}
+              startDate={anggaran.start_date}
+              endDate={anggaran.end_date}
+              currentMonthYear={currentMonthYear}
+            />
+          ))}
         </section>
-        <button className="add-button">
-          <FaPlusCircle size={32} onClick={handleTambahAnggaran} />
+
+        <button className="add-button" onClick={handleTambahAnggaran}>
+          <FaPlusCircle size={32} />
         </button>
       </main>
+      {showOverlay && <TambahAnggaran onClose={handleCloseOverlay} />}
     </div>
   );
 }
 
-function BudgetItem({ icon, title, used, budget, remaining, percentage }) {
+function BudgetItem({
+  icon,
+  title,
+  used,
+  budget,
+  remaining,
+  percentage,
+  onDelete,
+  startDate,
+  endDate,
+  currentMonthYear,
+}) {
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC", // Set timezone to UTC
+    };
+    const date = new Date(dateString).toLocaleDateString("en-US", options);
+    return date;
+  };
+
+  const dateRange =
+    startDate && endDate
+      ? `${formatDate(startDate)} - ${formatDate(endDate)}`
+      : `Bulanan . ${currentMonthYear}`;
+
   return (
     <div className="budget-item">
       <div className="budget-header">
@@ -60,7 +222,7 @@ function BudgetItem({ icon, title, used, budget, remaining, percentage }) {
           {icon}
           <div>
             <h3>{title}</h3>
-            <span>Bulanan . Mei 2024</span>
+            <span>{dateRange}</span>
           </div>
         </div>
         <div className="budget-info">
@@ -73,6 +235,9 @@ function BudgetItem({ icon, title, used, budget, remaining, percentage }) {
             <span>{remaining}</span>
           </div>
         </div>
+        <button className="delete-button" onClick={onDelete}>
+          <FaTrash size={16} />
+        </button>
       </div>
       <div className="budget-content">
         <div className="used">

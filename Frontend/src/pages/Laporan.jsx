@@ -17,7 +17,6 @@ function Laporan() {
           </div>
           <div className="filter-table">
             <FilterDataLaporan />
-            <LaporanTable />
           </div>
         </div>
       </div>

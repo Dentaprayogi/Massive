@@ -1,4 +1,19 @@
 import { query } from "../database/db.js";
+import { format, parse } from "date-fns";
+
+// Fungsi untuk mem-parsing string 'MM-dd-yyyy' menjadi objek Date
+const parseDateString = (dateString) => {
+  if (typeof dateString !== "string") {
+    throw new TypeError("dateString should be a string");
+  }
+  const [month, day, year] = dateString.split("-").map(Number);
+  return new Date(year, month - 1, day); // Month dimulai dari 0 (Januari = 0)
+};
+
+// Fungsi untuk mem-format objek Date menjadi string 'MM-dd-yyyy'
+const formatDateToString = (date) => {
+  return format(date, "MM-dd-yyyy");
+};
 
 export const tambahAnggaran = async (req, res) => {
   const { kategori, jumlah, start_date, end_date } = req.body;
@@ -9,6 +24,14 @@ export const tambahAnggaran = async (req, res) => {
     if (!kategori || !jumlah || !start_date || !end_date) {
       return res.status(400).json({ msg: "Semua kolom wajib diisi" });
     }
+
+    // Parse tanggal dari format 'MM-dd-yyyy' ke objek Date
+    const parsedStartDate = parseDateString(start_date);
+    const parsedEndDate = parseDateString(end_date);
+
+    // Format ulang ke 'yyyy-MM-dd' untuk disimpan di database
+    const formattedStartDate = format(parsedStartDate, "yyyy-MM-dd");
+    const formattedEndDate = format(parsedEndDate, "yyyy-MM-dd");
 
     // Cari kategori_id berdasarkan nama kategori
     const [kategoriData] = await query(
@@ -22,15 +45,17 @@ export const tambahAnggaran = async (req, res) => {
 
     const kategori_id = kategoriData.kategori_id;
 
-    // Tambahkan anggaran baru
+    // Tambahkan anggaran baru dengan tanggal yang sudah diformat
     const result = await query(
       "INSERT INTO anggaran (user_id, kategori_id, jumlah, start_date, end_date) VALUES (?, ?, ?, ?, ?)",
-      [user_id, kategori_id, jumlah, start_date, end_date]
+      [user_id, kategori_id, jumlah, formattedStartDate, formattedEndDate]
     );
 
     // Ambil data anggaran yang baru saja ditambahkan
     const [newAnggaran] = await query(
-      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, a.start_date, a.end_date
+      `SELECT a.anggaran_id, a.user_id, k.kategori, a.jumlah, 
+              DATE_FORMAT(a.start_date, '%m-%d-%Y') AS start_date,
+              DATE_FORMAT(a.end_date, '%m-%d-%Y') AS end_date
        FROM anggaran a
        JOIN kategori k ON a.kategori_id = k.kategori_id
        WHERE a.anggaran_id = ?`,

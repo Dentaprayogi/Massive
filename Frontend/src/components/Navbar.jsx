@@ -38,9 +38,9 @@ function Navbar() {
         </li>
         <li>
           <Link
-            to="/anggarankosong"
-            className={activeLink === "/anggarankosong" ? "active" : ""}
-            onClick={() => handleLinkClick("/anggarankosong")}
+            to="/laporananggaran"
+            className={activeLink === "/laporananggaran" ? "active" : ""}
+            onClick={() => handleLinkClick("/laporananggaran")}
             // className={activeLink === "/laporananggaran" ? "active" : ""}
             // onClick={() => handleLinkClick("/laporananggaran")}
           >
