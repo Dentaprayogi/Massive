@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2"; // Import SweetAlert2
 import "../css/SignUpOverlay.css";
 
-const SignUpOverlay = ({ show, onClose, onLogin, onRegisterSuccess }) => {
+const SignUpOverlay = ({ show, onClose, onLogin }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nama_depan: "",
     nama_belakang: "",
@@ -76,7 +79,20 @@ const SignUpOverlay = ({ show, onClose, onLogin, onRegisterSuccess }) => {
         formData
       );
       console.log("User registered:", response.data);
-      onRegisterSuccess(); // Panggil callback ketika registrasi berhasil
+
+      // Tampilkan SweetAlert untuk memberitahu pengguna bahwa sign up berhasil
+      Swal.fire({
+        icon: "success",
+        title: "Sign Up Berhasil",
+        text: "Anda berhasil mendaftar!",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Jika pengguna menekan OK, buka overlay login
+          onLogin();
+        }
+      });
     } catch (error) {
       if (error.response) {
         console.error("Error registering user:", error.response.data);
