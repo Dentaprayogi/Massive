@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as XLSX from "xlsx";
 import "../css/FilterDataLaporan.css";
 import "../css/LaporanTable.css";
 
@@ -43,7 +44,7 @@ function FilterDataLaporan() {
       const responseData = await response.json();
       console.log("Data response from server:", responseData);
       setData(responseData.transaksi);
-      setTotal(responseData.totalSaldo);
+      calculateTotal(responseData.transaksi); // Hitung total setelah data diperbarui
     } catch (error) {
       console.error("Error:", error);
     }
@@ -66,6 +67,29 @@ function FilterDataLaporan() {
     setFilterJenis(jenis);
     console.log("Filters:", bulan, tahun, jenis); // Menambahkan log untuk melihat nilai filter yang dipilih
     setReloadTable(true); // Setel reloadTable ke true untuk memicu reload
+  };
+
+  const handleExport = () => {
+    const exportData = data.map((item) => ({
+      Tanggal: item.transaksi_date,
+      Jenis: item.jenis,
+      Keterangan: item.keterangan,
+      "Sumber Keuangan": item.sumber_keuangan,
+      Jumlah: item.jumlah,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Laporan");
+    XLSX.writeFile(wb, "laporan.xlsx");
+  };
+
+  const calculateTotal = (data) => {
+    const totalAmount = data.reduce((acc, item) => {
+      const jumlah = parseFloat(item.jumlah);
+      return acc + (isNaN(jumlah) ? 0 : jumlah);
+    }, 0);
+    setTotal(totalAmount);
   };
 
   return (
@@ -109,7 +133,7 @@ function FilterDataLaporan() {
             </select>
           </label>
           <button onClick={handleTampilkan}>Tampilkan</button>
-          <button>Ekspor</button>
+          <button onClick={handleExport}>Ekspor</button>
         </div>
       </div>
       <div className="table-container">

@@ -45,15 +45,17 @@ function HeaderDashboard() {
     fetchUserProfile();
   }, []);
 
-  // Fungsi untuk mendapatkan tanggal saat ini dalam format yang diinginkan
-  const getCurrentDate = () => {
+  // Fungsi untuk mendapatkan tanggal UTC saat ini dalam format yang diinginkan
+  const getCurrentDateUTC = () => {
+    const now = new Date();
     const options = {
-      weekday: "long",
+      timeZone: "UTC",
       year: "numeric",
       month: "long",
       day: "numeric",
     };
-    return new Date().toLocaleDateString("id-ID", options); // 'id-ID' untuk format bahasa Indonesia
+
+    return now.toLocaleDateString("en-US", options); // 'en-US' untuk format bahasa Inggris
   };
 
   return (
@@ -68,7 +70,7 @@ function HeaderDashboard() {
       </h1>
       <p>Ringkasan keuangan</p>
       <div className="header-dashboard-date">
-        <p>{getCurrentDate()}</p>
+        <p>{getCurrentDateUTC()}</p>
       </div>
     </header>
   );
